@@ -93,14 +93,27 @@ class Employee {
 		return this.salary - this.salary * (this.socialRate/100.0);
 	}
 	
-	public long daysSinceBirth(){
+	public long daysBeforeBirthDay(){
 		LocalDate currentDate = LocalDate.now();
-		return ChronoUnit.DAYS.between(this.birthDay, currentDate);
+		LocalDate nextBirthDay = this.birthDay.withYear(currentDate.getYear()); //.withYear permet de set l'année de birthyear sur l'année actuelle -> prochain anniversaire
+
+		//Si l'anniversaire de cette année est déjà passé, on prend l'année prochaine
+		if (nextBirthDay.isBefore(currentDate) || nextBirthDay.isEqual(currentDate)){
+			nextBirthDay = nextBirthDay.plusYears(1); //.plusYears rajoute une valeur à l'année, pareil avec .plusMonths ou .plusDays 
+		}
+
+		return ChronoUnit.DAYS.between(currentDate, nextBirthDay);
 	}
 
 	@Override
 	public String toString() {
-		return "Employee [registrationNumber=" + registrationNumber + ", lastName=" + lastName + ", firstName="
-				+ firstName + ", salary=" + salary +  ", netSalary=" + toNetSalary() + ", socialRate=" + socialRate + ", birthDay=" + birthDay + "]";
+		return "Employee [registrationNumber=" + registrationNumber + 
+						"\n lastName=" + lastName + 
+						"\n firstName=" + firstName + 
+						"\n salary=" + salary +  
+						"\n netSalary=" + toNetSalary() + 
+						"\n socialRate=" + socialRate + 
+						"\n birthDay=" + birthDay + 
+						"\n nextBirthDay in " + daysBeforeBirthDay() + " days " + "]";
 	}
 }
