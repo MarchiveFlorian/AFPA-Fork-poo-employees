@@ -1,5 +1,8 @@
 package fr.afpa.employees;
 
+import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
+
 /*
 Objectif :
 L’objectif de ce TP est de concevoir un programme en console basé sur une approche objet et
@@ -21,13 +24,15 @@ class Employee {
 	private String firstName;
 	private double salary;
 	private final int socialRate = 30;
+	private LocalDate birthDay;
 	
 	// TODO compléter le constructeur de la classe
-	public Employee(String registrationNumber, String lastName, String firstName, double salary) {
+	public Employee(String registrationNumber, String lastName, String firstName, double salary, String birthDay) {
 		this.registrationNumber = registrationNumber;
 		this.lastName = lastName;
 		this.firstName = firstName;
 		this.salary = salary;
+		this.birthDay = LocalDate.parse(birthDay);
 	}
 	
 	// TODO implémenter les setters et getters de la classe (permet d'accéder aux
@@ -53,6 +58,10 @@ class Employee {
 	public int getSocialRate() {
 		return socialRate;
 	}
+
+	public LocalDate getBirthDay(){
+		return birthDay;
+	}
 	
 	// Setters
 	public void setRegistrationNumber(String registrationNumber) throws Exception {
@@ -71,13 +80,27 @@ class Employee {
 		this.salary = salary;
 	}
 
+	public void setBirthDay(String birthDay) {
+		this.birthDay = LocalDate.parse(birthDay);
+	}
+
 	// TODO implémenter la méthode "toString()" qui renvoie une chaîne de caractère
 	// qui représente un objet de la classe employé
 	// plus d'information sur la méthode "toString()" ->
 	// https://codegym.cc/fr/groups/posts/fr.986.mthode-java-tostring
+	
+	public double toNetSalary(){
+		return this.salary - this.salary * (this.socialRate/100.0);
+	}
+	
+	public long daysSinceBirth(){
+		LocalDate currentDate = LocalDate.now();
+		return ChronoUnit.DAYS.between(this.birthDay, currentDate);
+	}
+
 	@Override
 	public String toString() {
 		return "Employee [registrationNumber=" + registrationNumber + ", lastName=" + lastName + ", firstName="
-				+ firstName + ", salary=" + salary + ", socialRate=" + socialRate + "]";
+				+ firstName + ", salary=" + salary +  ", netSalary=" + toNetSalary() + ", socialRate=" + socialRate + ", birthDay=" + birthDay + "]";
 	}
 }
