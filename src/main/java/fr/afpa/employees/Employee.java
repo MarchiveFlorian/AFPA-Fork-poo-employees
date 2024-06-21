@@ -1,5 +1,6 @@
 package fr.afpa.employees;
 
+
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 
@@ -58,21 +59,30 @@ class Employee {
 	public int getSocialRate() {
 		return socialRate;
 	}
-
+	
 	public LocalDate getBirthDay(){
 		return birthDay;
 	}
 	
 	// Setters
-	public void setRegistrationNumber(String registrationNumber) throws Exception {
+	public void setRegistrationNumber(String registrationNumber) {
+		if (!checkRegistrationNumber(registrationNumber)) {
+			throw new IllegalArgumentException("Le matricule n'est pas correctement formaté.");
+		}
 		this.registrationNumber = registrationNumber;
 	}
 	
 	public void setLastName(String lastName) {
+		if (!checkName(lastName)) {
+			throw new IllegalArgumentException("Le nom ne doit pas être vide et ne doit pas contenir de chiffres.");
+		}
 		this.lastName = lastName;
 	}
 	
 	public void setFirstName(String firstName) {
+		if (!checkName(firstName)) {
+			throw new IllegalArgumentException("Le prénom ne doit pas être vide et ne doit pas contenir de chiffres.");
+		}
 		this.firstName = firstName;
 	}
 	
@@ -80,7 +90,10 @@ class Employee {
 		this.salary = salary;
 	}
 
-	public void setBirthDay(String birthDay) {
+	public void setBirthDay(String birthDay) throws Exception {
+		if (!checkDateFormat(birthDay)) {
+			throw new Exception("Le format de la date est incorrect. Utilisez le format AAAA-MM-JJ.");
+		}
 		this.birthDay = LocalDate.parse(birthDay);
 	}
 
@@ -88,6 +101,21 @@ class Employee {
 	// qui représente un objet de la classe employé
 	// plus d'information sur la méthode "toString()" ->
 	// https://codegym.cc/fr/groups/posts/fr.986.mthode-java-tostring
+
+	// Méthode pour vérifier le format du matricule
+	private boolean checkRegistrationNumber(String registrationNumber) {
+		return registrationNumber.matches("\\d{2}[A-Za-z]{3}\\d{2}");
+	}
+
+	// Méthode pour vérifier le format du nom et du prénom
+	private boolean checkName(String name) {
+		return name != null && !name.isEmpty() && name.matches("^[A-Za-z\\s]+$");
+	}
+
+	// Méthode pour vérifier le format de la date
+	private boolean checkDateFormat(String date) {
+		return date.matches("\\d{4}-\\d{2}-\\d{2}");
+	}
 	
 	public double toNetSalary(){
 		return this.salary - this.salary * (this.socialRate/100.0);

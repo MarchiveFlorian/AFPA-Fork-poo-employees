@@ -1,5 +1,7 @@
 package fr.afpa.employees;
 
+import java.util.ArrayList;
+
 /**
  * Classe principale du projet, contient la fonction "main"
  */
@@ -16,10 +18,22 @@ class EmployeeMain
 		Employee employee4 = new Employee("44ABC55", "Random", "Guy", 9999, "1999-09-29");
 		
 		// TODO afficher les informations des employés avec System.out.println
-		System.out.println(employee1.toString());
-		System.out.println(employee2.toString());
-		System.out.println(employee3.toString());
-		System.out.println(employee4.toString());
+		
+		// System.out.println(employee1.toString());
+		// System.out.println(employee2.toString());
+		// System.out.println(employee3.toString());
+		// System.out.println(employee4.toString());
+
+		ArrayList<Employee> listEmployees = new ArrayList<>();
+		listEmployees.add(employee1);
+		listEmployees.add(employee2);
+		listEmployees.add(employee3);
+		listEmployees.add(employee4);
+
+		for(Employee employee : listEmployees){
+			System.out.println(employee);
+		}
+
 	}
 }
 
